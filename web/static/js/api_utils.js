@@ -81,9 +81,9 @@ Api_Utils.put = function(url, jsonlist, headers){
 
 Api_Utils.startvideo = function(id){
     var jsonlist = JSON.stringify({"camera":id });
-    return Api_Utils.post( "http://localhost:5000/api/start_camera", jsonlist);
+    return Api_Utils.post( "http://localhost:5000/bwc/api/start_camera", jsonlist);
 }
 
 Api_Utils.stopvideo = function(){
-    return Api_Utils.get( "http://localhost:5000/api/stop_camera");
+    return Api_Utils.get( "http://localhost:5000/bwc/api/stop_camera");
 }

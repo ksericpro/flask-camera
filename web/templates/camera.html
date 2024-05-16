@@ -28,7 +28,7 @@
         console.log("starting cam_id="+cam_id);
         try {
           let result = await startvideo(cam_id);
-          $("#video_stream").attr("src","http://localhost:5000/video_feed");
+          $("#video_stream").attr("src","http://localhost:5000/bwc/video_feed");
         }catch(err) {
           console.log(err);
         }finally {}
@@ -40,7 +40,7 @@
          $("#video_stream").attr("src", null);
         try {
           let result = await stopvideo();
-          $("#video_stream").attr("src","http://localhost:5000/video_feed");
+          $("#video_stream").attr("src","http://localhost:5000/bwc/video_feed");
         }catch(err) {
           console.log(err);
         }finally {}

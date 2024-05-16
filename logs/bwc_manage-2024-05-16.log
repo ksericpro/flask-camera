@@ -124,3 +124,15 @@
 2024-05-16 23:35:30,597 - werkzeug - INFO - 127.0.0.1 - - [16/May/2024 23:35:30] "GET /bwc/api/stop_camera HTTP/1.1" 200 -
 2024-05-16 23:36:59,530 - app.global_settings - INFO - Redis Manager cleanup
 2024-05-16 23:36:59,550 - app.global_settings - INFO - Redis Manager died
+2024-05-16 23:37:37,106 - app.global_settings - INFO - [Init]::Setup Redis
+2024-05-16 23:37:37,106 - app.global_settings - INFO - Redis Manager::Trying to Connected to '127.0.0.1:6379:'
+2024-05-16 23:37:37,116 - app.global_settings - INFO - Redis Manager::Successfully connected.
+2024-05-16 23:37:37,117 - app.global_settings - INFO - [Init]::Completed
+2024-05-16 23:37:37,120 - app.global_settings - INFO - BWC Manage v1.0.0
+2024-05-16 23:37:37,973 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.86.25:5000
+2024-05-16 23:37:37,974 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-05-17 00:23:20,289 - app.global_settings - INFO - Redis Manager cleanup
+2024-05-17 00:23:20,346 - app.global_settings - INFO - Redis Manager died

@@ -1,5 +1,7 @@
 img_url = "D:/projects/dotnetprojects/dotnet-bodywornsln/files"
 max_frame = 3
+BATCH = 10
+WAIT_READ_FILES = 5
 
 #redis
 REDIS_SERVER = "127.0.0.1"

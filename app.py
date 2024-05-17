@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from flask import Flask, request, render_template, Response
-from camera_custom import Camera
+from prototype_camera_2 import Camera
 import os
 import redis
 import global_settings
@@ -48,9 +48,11 @@ def gen(camera):
         #print(STARTED)
         frame = camera.get_frame()
        # print(frame)
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-    #print("EXITINNNNN")
+        if frame is not None:
+            yield (b'--frame\r\n'
+                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        else:
+            yield('')
     _logger.info("Camera {} stream is terminated!".format(PREV_CAM_ID))
 
 @app.route(config.API_PREFIX + '/video_feed')

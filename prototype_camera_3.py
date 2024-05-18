@@ -11,15 +11,15 @@ class Camera(object):
     def __init__(self, cam_id):
         self.PLAYBACk_BATCH = config.PLAYBACK_PERIOD * config.PLAYBACK_FPS
         self.frameset_1 = []
-        self.frameset_2 = []
+        #self.frameset_2 = []
         #print("Camera Class = {}".format(cam_id))
         self.cam_id = cam_id
         self.img_url = "{}/{}/".format(config.PLAYBACK_IMAGE_SRC, cam_id)
         print("camera id = {}, img_url = {}".format(cam_id, self.img_url))
         #self.openfiles(self.img_url) #working
         #self._should_stop = False
-        self.current_frameset = self.frameset_1 # pointer
-        self.toggle_frameset = 0
+       # self.current_frameset = self.frameset_1 # pointer
+       # self.toggle_frameset = 0
         self.current_frameset_iteration_completed = False
         self.init()
         
@@ -38,45 +38,30 @@ class Camera(object):
             next_time += (int(time()) - next_time) // delay * delay + delay
 
     def iteration_checker(self):
-        print("iteration_checker:start: current_frameset_iteration_completed= {}, toggle_frameset={}".format(self.current_frameset_iteration_completed, self.toggle_frameset))
-        if self.current_frameset_iteration_completed:
-            test_set = []
-            if self.toggle_frameset == 0:
-                self.openfiles(test_set, self.img_url)
-                if len(test_set)>0:
-                    self.frameset_2 = copy.deepcopy(test_set)
-                    del self.frameset_1[:]
-                    self.toggle_frameset = 1
-                    self.current_frameset = self.frameset_2
-                    self.current_frameset_iteration_completed = False
-                else:
-                    del self.frameset_1[:]
-            else:
-                self.openfiles(test_set, self.img_url)
-                if len(test_set)>0:
-                    self.frameset_1 = copy.deepcopy(test_set)
-                    del self.frameset_2[:]
-                    self.toggle_frameset = 0
-                    self.current_frameset = self.frameset_1
-                    self.current_frameset_iteration_completed = False
-                else:
-                    del self.frameset_2[:]
-            del test_set[:]
-
-            
-        print("iteration_checker: current_frameset_iteration_completed= {}, toggle_frameset={}, frameset_1={}, frameset_2={}".format(self.current_frameset_iteration_completed,
-         self.toggle_frameset, len(self.frameset_1), len(self.frameset_2)))
-        #self.openfiles(self.current_frameset, self.img_url)
+        print("iteration_checker:start:")
+        test_set = []
+        self.openfiles(test_set, self.img_url)
+        sz = len(test_set)
+        print("iteration_check: delta file(s)={}".format(sz))
+        if sz>0:
+           # del self.frameset_1[:2]
+            #print(len(self.frameset_1))
+            self.frameset_1 =  self.frameset_1[:2] + test_set
+        print("iteration_check: frameset_1 file(s)={}".format(len(self.frameset_1)))
+        print("iteration_check:end")
 
     def start_threads(self):
-        threading.Thread(target=lambda: self.every(config.PLAYBACK_PERIOD, self.iteration_checker)).start()
+        #self.iteration_checker()
+        t2 = Timer(4, self.iteration_checker,)
+        t2.start()
+        threading.Thread(target=lambda: self.every(20, self.iteration_checker)).start()
 
     # initialize
     def init(self):
         print("init:delay start={}s".format(config.PLAYBACK_CAMERA_DELAY_START))
         self.current_frameset = self.frameset_1
-        t = Timer(config.PLAYBACK_CAMERA_DELAY_START, self.openfiles, args=(self.current_frameset, self.img_url))
-        t.start()
+        #t = Timer(config.PLAYBACK_CAMERA_DELAY_START, self.openfiles, args=(self.current_frameset, self.img_url))
+        #t.start()
         t2 = Timer(config.PLAYBACK_CAMERA_DELAY_START, self.start_threads,)
         t2.start()
         #threading.Thread(target=lambda: self.every(config.PLAYBACK_PERIOD, self.iteration_checker)).start()
@@ -120,8 +105,8 @@ class Camera(object):
         
     def get_frame(self):
         #print("using current_frameset:{}".format(self.toggle_frameset))
-        sz = len(self.current_frameset)
-        if len(self.current_frameset)>0:
+        sz = len(self.frameset_1)
+        if sz>0:
             #print("Getting frame for {}".format(self.cam_id))
             n = int(time()) % sz
             if n == sz -1:
@@ -129,6 +114,6 @@ class Camera(object):
                 self.current_frameset_iteration_completed = True
             #print("{}".format(n))
             #print("{}:Getting frame for {}, n={}".format(time(), self.cam_id, n))
-            return self.current_frameset[n]
+            return self.frameset_1[n]
         else:
             return None

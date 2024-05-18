@@ -14,9 +14,7 @@
 # Flow
 - Wait 5 seconds
 - Read 10 Images to Frames
-- Wait 5 seconds
-- Delete 10 Images from Frames
-- Read 10 Images to Frames
+
 
 
 # Link
@@ -26,3 +24,4 @@
 - [Pointer] (https://www.tutorialspoint.com/what-is-the-pointer-in-python-does-a-pointer-exist-in-python#:~:text=Everything%20is%20an%20object%20in,place%20the%20object%20is%20kept.)
 - [Repeated Timer] (https://pythonassets.com/posts/executing-code-every-certain-time/)
 - [Repeated Task] (https://gist.github.com/allanfreitas/e2cd0ff49bbf7ddf1d85a3962d577dbf)
+- [Delete list] (https://www.geeksforgeeks.org/python-front-and-rear-range-deletion-in-a-list/)

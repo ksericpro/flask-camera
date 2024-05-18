@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from flask import Flask, request, render_template, Response
-from prototype_camera_2 import Camera
+from prototype_camera_3 import Camera
 import os
 import redis
 import global_settings

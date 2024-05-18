@@ -1,11 +1,10 @@
-img_url = "D:/projects/dotnetprojects/dotnet-bodywornsln/files"
-max_frame = 3
-BATCH = 10
-
+# Playback
+#img_url = "D:/projects/dotnetprojects/dotnet-bodywornsln/files"
+PLAYBACK_IMAGE_SRC = "D:/projects/dotnetprojects/dotnet-bodywornsln/files"
 PLAYBACK_CAMERA_DELAY_START = 5
-PLAYBACK_PERIOD = 5
+PLAYBACK_PERIOD = 10
 PLAYBACK_FPS = 2
-
+PLAYBACK_DELETE_SRC_IMAGE_COMMIT = True
 
 #redis
 REDIS_SERVER = "127.0.0.1"

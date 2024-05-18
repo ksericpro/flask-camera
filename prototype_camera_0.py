@@ -4,13 +4,12 @@ import config
 import threading
 
 BATCH = 10
-
 class Camera(object):
     def __init__(self, cam_id):
         self.frames = []
         print("Camera Class = {}".format(cam_id))
         self.cam_id = cam_id
-        self.img_url = "{}/{}/".format(config.img_url, cam_id)
+        self.img_url = "{}/{}/".format(config.PLAYBACK_IMAGE_SRC, cam_id)
         print("camera id = {}, img_url = {}".format(cam_id, self.img_url))
         self.openfiles(self.img_url)
         self._should_stop = False

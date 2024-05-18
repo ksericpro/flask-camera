@@ -9,7 +9,7 @@ class Camera(object):
         #self.frames = []
         print("init:Camera Class = {}".format(cam_id))
         self.cam_id = cam_id
-        self.img_url = "{}/{}/".format(config.img_url, cam_id)
+        self.img_url = "{}/{}/".format(config.PLAYBACK_IMAGE_SRC, cam_id)
         print("init:camera id = {}, img_url = {}".format(cam_id, self.img_url))
         self.open_files(self.img_url)
         self._should_stop = False
@@ -46,7 +46,7 @@ class Camera(object):
        # self.stop_threads()
        # time.sleep(config.WAIT_READ_FILES * 2)
         print("start_thread:start")
-        t1 = threading.Thread(target=self.populate_frames, args=(self.img_url, config.BATCH,))
+        t1 = threading.Thread(target=self.populate_frames, args=(self.img_url, 10,))
         t1.start()
         t1.join()
         print("start_thread:end")

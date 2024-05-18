@@ -5,7 +5,7 @@ class Camera(object):
     def __init__(self, cam_id):
         print("Camera Class = {}".format(cam_id))
         self.cam_id = cam_id
-        self.img_url = "{}/{}/".format(config.img_url, cam_id)
+        self.img_url = "{}/{}/".format(config.PLAYBACK_IMAGE_SRC, cam_id)
         print("camera id = {}, img_url = {}".format(cam_id, self.img_url))
         self.openfiles()
        
@@ -20,6 +20,6 @@ class Camera(object):
     def get_frame(self):
         if (self.frames):
             print("Getting frame for {}".format(self.cam_id))
-            return self.frames[int(time()) % config.max_frame]
+            return self.frames[int(time()) % 3]
         else:
             return None

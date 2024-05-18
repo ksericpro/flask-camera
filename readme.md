@@ -24,3 +24,5 @@
                  (https://blog.miguelgrinberg.com/post/flask-video-streaming-revisited)
 - [Delete File] (https://superfastpython.com/timer-thread-in-python/)
 - [Pointer] (https://www.tutorialspoint.com/what-is-the-pointer-in-python-does-a-pointer-exist-in-python#:~:text=Everything%20is%20an%20object%20in,place%20the%20object%20is%20kept.)
+- [Repeated Timer] (https://pythonassets.com/posts/executing-code-every-certain-time/)
+- [Repeated Task] (https://gist.github.com/allanfreitas/e2cd0ff49bbf7ddf1d85a3962d577dbf)

@@ -22,3 +22,5 @@
 # Link
 - *[Flask Camera] (https://blog.miguelgrinberg.com/post/video-streaming-with-flask)
                  (https://blog.miguelgrinberg.com/post/flask-video-streaming-revisited)
+- [Delete File] (https://superfastpython.com/timer-thread-in-python/)
+- [Pointer] (https://www.tutorialspoint.com/what-is-the-pointer-in-python-does-a-pointer-exist-in-python#:~:text=Everything%20is%20an%20object%20in,place%20the%20object%20is%20kept.)

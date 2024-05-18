@@ -21,6 +21,7 @@ class Camera(object):
        # self.current_frameset = self.frameset_1 # pointer
        # self.toggle_frameset = 0
         self.current_frameset_iteration_completed = False
+        self.mutex = threading.Lock()  # is equal to threading.Semaphore(1)
         self.init()
         
     # Thread test
@@ -39,22 +40,29 @@ class Camera(object):
 
     def iteration_checker(self):
         print("iteration_checker:start:")
-        test_set = []
-        self.openfiles(test_set, self.img_url)
-        sz = len(test_set)
-        print("iteration_check: delta file(s)={}".format(sz))
-        if sz>0:
-           # del self.frameset_1[:2]
-            #print(len(self.frameset_1))
-            self.frameset_1 =  self.frameset_1[:2] + test_set
-        print("iteration_check: frameset_1 file(s)={}".format(len(self.frameset_1)))
-        print("iteration_check:end")
+       
+        if self.current_frameset_iteration_completed:
+            test_set = []
+            self.openfiles(test_set, self.img_url)
+            sz = len(test_set)
+            print("iteration_check: delta file(s)={}".format(sz))
+            if sz>0:
+            # del self.frameset_1[:2]
+                #print(len(self.frameset_1))
+                #self.mutex.acquire()
+                self.frameset_1 = test_set
+                #self.mutex.release
+
+            self.current_frameset_iteration_completed = False
+            print("iteration_check: frameset_1 file(s)={}".format(len(self.frameset_1)))
+            print("iteration_check:end")
 
     def start_threads(self):
-        #self.iteration_checker()
-        t2 = Timer(4, self.iteration_checker,)
+        self.iteration_checker()
+        t2 = Timer(5, self.iteration_checker,)
         t2.start()
-        threading.Thread(target=lambda: self.every(20, self.iteration_checker)).start()
+        self.current_frameset_iteration_completed = True
+        threading.Thread(target=lambda: self.every(10, self.iteration_checker)).start()
 
     # initialize
     def init(self):
@@ -105,6 +113,7 @@ class Camera(object):
         
     def get_frame(self):
         #print("using current_frameset:{}".format(self.toggle_frameset))
+        #self.mutex.acquire()
         sz = len(self.frameset_1)
         if sz>0:
             #print("Getting frame for {}".format(self.cam_id))
@@ -114,6 +123,9 @@ class Camera(object):
                 self.current_frameset_iteration_completed = True
             #print("{}".format(n))
             #print("{}:Getting frame for {}, n={}".format(time(), self.cam_id, n))
+            #self.mutex.release();
             return self.frameset_1[n]
+            
         else:
+            #self.mutex.release();
             return None

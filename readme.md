@@ -25,3 +25,4 @@
 - [Repeated Timer] (https://pythonassets.com/posts/executing-code-every-certain-time/)
 - [Repeated Task] (https://gist.github.com/allanfreitas/e2cd0ff49bbf7ddf1d85a3962d577dbf)
 - [Delete list] (https://www.geeksforgeeks.org/python-front-and-rear-range-deletion-in-a-list/)
+- [Mutex] (https://stackoverflow.com/questions/31508574/semaphores-on-python)

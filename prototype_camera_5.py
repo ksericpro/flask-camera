@@ -24,11 +24,13 @@ class Camera(object):
         self.mutex = threading.Lock()  # is equal to threading.Semaphore(1)
         self.init()
         self.thread = None;
+        self.run = True;
         
-    # Thread test
+    # Timer
     def every(self, delay, task):
         next_time = int(time()) + delay
-        while True:
+        print("every:start")
+        while self.run:
             tm.sleep(max(0, next_time - tm.time()))
             try:
                 task()
@@ -38,6 +40,7 @@ class Camera(object):
             # logger.exception("Problem while executing repetitive task.")
             # skip tasks if we are behind schedule:
             next_time += (int(time()) - next_time) // delay * delay + delay
+        print("every:end")
 
     def iteration_checker(self):
         print("iteration_checker:start:")
@@ -68,9 +71,10 @@ class Camera(object):
      
 
     def stop_threads(self):
-        #self.thread.
         print("killing threads")
-       # self.thread.
+        self.run = False
+        self.thread = None 
+     
 
     # initialize
     def init(self):

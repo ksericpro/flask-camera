@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from flask import Flask, request, render_template, Response
-from prototype_camera_4 import Camera
+from prototype_camera_5 import Camera
 import os
 import redis
 import global_settings
@@ -9,12 +9,14 @@ import sys
 import signal
 from flask_cors import CORS
 import json
+#import authentication
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print("ROOT_DIR={}".format(ROOT_DIR))
 STARTED = True
 PREV_CAM_ID = -1
 CAM_ID = -1
+CAM = None
 
 # setup global
 global_settings.init('bwc_manage', True)
@@ -41,6 +43,11 @@ CORS(app)
 def index():
     return render_template('camera.html')
 
+#@app.route("/test")
+#@authentication.check_mandatory_token
+#def test():
+#    return {"msg":"ok"},200
+
 def gen(camera):
     print("start {}".format(camera.cam_id))
     global STARTED, PREV_CAM_ID
@@ -57,11 +64,13 @@ def gen(camera):
 
 @app.route(config.API_PREFIX + '/video_feed')
 def video_feed():
-    global CAM_ID
+    global CAM_ID, CAM
     _logger.info("Video feed on CAM_ID={}".format(CAM_ID))
     if CAM_ID != -1:
+        CAM = Camera(CAM_ID)
         #CAM = gen(Camera(CAM_ID))
-        return Response(gen(Camera(CAM_ID)), 
+
+        return Response(gen(CAM), 
                         mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         dir = os.getcwd()
@@ -71,9 +80,7 @@ def video_feed():
 
 @app.route(config.API_PREFIX + "/api/ping", methods=['GET'])
 def ping():
-    return {
-        "msg": "pong",
-    }, 200
+    return {"msg": "pong"}, 200
 
 @app.route(config.API_PREFIX + "/api/start_camera", methods=['POST'])
 def start_camera():
@@ -106,7 +113,7 @@ def start_camera():
 @app.route(config.API_PREFIX + "/api/stop_camera", methods=['GET'])
 def stop_camera():
     try: 
-        global CAM_ID, PREV_CAM_ID, STARTED
+        global CAM_ID, PREV_CAM_ID, STARTED, CAM
         _logger.info("test")
         _logger.info("Stop CAM_ID={}".format(CAM_ID))
         PREV_CAM_ID = CAM_ID
@@ -118,6 +125,9 @@ def stop_camera():
             "to": "dotnet",
         }
 
+        if CAM is not None:
+            CAM.stop_threads()
+            CAM = None
         # convert into JSON:
         data_json = json.dumps(data)
         _redis_mgr.publish(config.REDIS_BWC_TOPIC, data_json)

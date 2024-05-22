@@ -7,6 +7,10 @@
 - curl -XPOST -H "content-type:application/json" -d "{\"camera\":45}" localhost:5000/bwc/api/start_camera
 - curl localhost:5000/bwc/api/stop_camera
 
+- curl https://smrtmbocc.certismozart.com/bwc/api/ping
+- curl -XPOST -H "content-type:application/json" -d "{\"camera\":45}" https://smrtmbocc.certismozart.com/bwc/api/start_camera
+- curl https://smrtmbocc.certismozart.com//bwc/api/stop_camera
+
 # redis 
 {"task":"START_LIVESTREAM", "camera":45, "to":"dotnet"}
 {"task":"STOP_LIVESTREAM", "camera":45, "to":"dotnet"}

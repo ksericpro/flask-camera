@@ -9,7 +9,6 @@ import sys
 import signal
 from flask_cors import CORS
 import json
-#import authentication
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print("ROOT_DIR={}".format(ROOT_DIR))
@@ -32,7 +31,15 @@ def signal_handler(signal, frame):
     print("Ctrl Break detected.")
     _redis_mgr.cleanup()
     sys.exit()
-
+    
+def checkheader(request):
+    headers = request.headers
+    auth = headers.get("X-Api-Key")
+    print("auth={}".format(auth))
+    if auth is None or auth != config.API_KEY:
+        return False
+    return True      
+    
 app = Flask(__name__,
             static_url_path='', 
             static_folder='web/static',
@@ -84,6 +91,8 @@ def ping():
 
 @app.route(config.API_PREFIX + "/api/start_camera", methods=['POST'])
 def start_camera():
+    if not(checkheader(request)):
+        return {"message": "ERROR: Unauthorized"}, 401
     try:
         request_data = request.get_json()
         camera = request_data['camera']
@@ -112,6 +121,8 @@ def start_camera():
 
 @app.route(config.API_PREFIX + "/api/stop_camera", methods=['GET'])
 def stop_camera():
+    if not(checkheader(request)):
+        return {"message": "ERROR: Unauthorized"}, 401
     try: 
         global CAM_ID, PREV_CAM_ID, STARTED, CAM
         _logger.info("test")

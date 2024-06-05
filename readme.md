@@ -4,12 +4,16 @@
 
 # curls
 - curl localhost:5000/bwc/api/ping
-- curl -XPOST -H "content-type:application/json" -d "{\"camera\":45}" localhost:5000/bwc/api/start_camera
-- curl localhost:5000/bwc/api/stop_camera
+- curl -XPOST -H "content-type:application/json" -H "X-Api-Key:btehsjqnhrdvghjqciebrffbkrxagvuy" -d "{\"camera\":45}" localhost:5000/bwc/api/start_camera
+- curl -H "X-Api-Key:btehsjqnhrdvghjqciebrffbkrxagvuy" localhost:5000/bwc/api/stop_camera
 
 - curl https://smrtmbocc.certismozart.com/bwc/api/ping
 - curl -XPOST -H "content-type:application/json" -d "{\"camera\":45}" https://smrtmbocc.certismozart.com/bwc/api/start_camera
 - curl https://smrtmbocc.certismozart.com//bwc/api/stop_camera
+
+
+- http://52.187.14.7:5000
+- bwc04.southeastasia.cloudapp.azure.com
 
 # redis 
 {"task":"START_LIVESTREAM", "camera":45, "to":"dotnet"}

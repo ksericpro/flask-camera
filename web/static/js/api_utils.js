@@ -80,10 +80,12 @@ Api_Utils.put = function(url, jsonlist, headers){
 /* end generic promise api*/
 
 Api_Utils.startvideo = function(id){
+    var headers = { "Content-type": "application/json", "X-Api-Key":API_KEY }
     var jsonlist = JSON.stringify({"camera":id });
-    return Api_Utils.post( "http://localhost:5000/bwc/api/start_camera", jsonlist);
+    return Api_Utils.post( "/bwc/api/start_camera", jsonlist, headers);
 }
 
 Api_Utils.stopvideo = function(){
-    return Api_Utils.get( "http://localhost:5000/bwc/api/stop_camera");
+    var headers = { "Content-type": "application/json", "X-Api-Key":API_KEY }
+    return Api_Utils.get( "/bwc/api/stop_camera", headers);
 }

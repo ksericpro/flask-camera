@@ -14,6 +14,7 @@
 
 - http://52.187.14.7:5000
 - bwc04.southeastasia.cloudapp.azure.com
+- curl http://bwc04.southeastasia.cloudapp.azure.com:5000/bwc/api/ping
 
 # redis 
 {"task":"START_LIVESTREAM", "camera":45, "to":"dotnet"}

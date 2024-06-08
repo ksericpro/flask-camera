@@ -17,9 +17,8 @@
 
 # ssl
 - openssl pkcs12 -in "private.pfx" -out private.key -nodes -passin pass:12345
-
 - https://smrtbwc.somesolutions.net:5000/
-
+- curl https://smrtbwc.somesolutions.net:5000/bwc/api/ping
 
 # Link
 - *[Flask Camera] (https://blog.miguelgrinberg.com/post/video-streaming-with-flask)

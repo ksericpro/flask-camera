@@ -4,17 +4,8 @@
 
 # curls
 - curl localhost:5000/bwc/api/ping
-- curl -XPOST -H "content-type:application/json" -H "X-Api-Key:btehsjqnhrdvghjqciebrffbkrxagvuy" -d "{\"camera\":45}" localhost:5000/bwc/api/start_camera
-- curl -H "X-Api-Key:btehsjqnhrdvghjqciebrffbkrxagvuy" localhost:5000/bwc/api/stop_camera
-
-- curl https://smrtmbocc.certismozart.com/bwc/api/ping
-- curl -XPOST -H "content-type:application/json" -d "{\"camera\":45}" https://smrtmbocc.certismozart.com/bwc/api/start_camera
-- curl https://smrtmbocc.certismozart.com//bwc/api/stop_camera
-
-
-- http://52.187.14.7:5000
-- bwc04.southeastasia.cloudapp.azure.com
-- curl http://bwc04.southeastasia.cloudapp.azure.com:5000/bwc/api/ping
+- curl -XPOST -H "content-type:application/json" -d "{\"camera\":45}" localhost:5000/bwc/api/start_camera
+- curl localhost:5000/bwc/api/stop_camera
 
 # redis 
 {"task":"START_LIVESTREAM", "camera":45, "to":"dotnet"}
@@ -24,6 +15,10 @@
 - Wait 5 seconds
 - Read 10 Images to Frames
 
+# ssl
+- openssl pkcs12 -in "private.pfx" -out private.key -nodes -passin pass:12345
+
+- https://smrtbwc.somesolutions.net:5000/
 
 
 # Link
@@ -35,3 +30,5 @@
 - [Repeated Task] (https://gist.github.com/allanfreitas/e2cd0ff49bbf7ddf1d85a3962d577dbf)
 - [Delete list] (https://www.geeksforgeeks.org/python-front-and-rear-range-deletion-in-a-list/)
 - [Mutex] (https://stackoverflow.com/questions/31508574/semaphores-on-python)
+- [convert ssl] (https://stackoverflow.com/questions/15413646/converting-pfx-to-pem-using-openssl)
+- [csr + private key using iis] (https://help.druva.com/en/articles/8806828-using-microsoft-iis-to-generate-csr-and-private-key)

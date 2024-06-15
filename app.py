@@ -33,6 +33,7 @@ current_working_directory = os.getcwd()
 print("current working dir = {}".format(current_working_directory))
 
 if config.USE_SSL:
+    print("using ssl")
     context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER) 
     context.load_cert_chain(os.path.join(current_working_directory, 'ssl/STAR_somesolutions_net.crt'), \
                             os.path.join(current_working_directory, 'ssl/private.key'))

@@ -6,6 +6,7 @@ USE_SSL = False
 
 # Playback
 #img_url = "D:/projects/dotnetprojects/dotnet-bodywornsln/files"
+#PLAYBACK_IMAGE_SRC = "C:/tsb/app/bwc/files"
 PLAYBACK_IMAGE_SRC = "D:/projects/dotnetprojects/dotnet-bodywornsln/files"
 PLAYBACK_CAMERA_DELAY_START = 12
 PLAYBACK_CHECK_DIR_INTERVAL = 4

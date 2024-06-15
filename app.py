@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from flask import Flask, request, render_template, Response
-from prototype_camera_5 import Camera
+from prototype_camera_6 import Camera
 import os
 import redis
 import global_settings
@@ -31,9 +31,11 @@ _redis_mgr = global_settings._redis_mgr
 # get the current working directory
 current_working_directory = os.getcwd()
 print("current working dir = {}".format(current_working_directory))
-context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER) 
-context.load_cert_chain(os.path.join(current_working_directory, 'ssl/STAR_somesolutions_net.crt'), \
-                        os.path.join(current_working_directory, 'ssl/private.key'))
+
+if config.USE_SSL:
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER) 
+    context.load_cert_chain(os.path.join(current_working_directory, 'ssl/STAR_somesolutions_net.crt'), \
+                            os.path.join(current_working_directory, 'ssl/private.key'))
 
 #handler Exit
 def signal_handler(signal, frame):
@@ -163,4 +165,7 @@ def stop_camera():
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
     _logger.info(config.APPLICATION_NAME + " " + config.APPLICATION_VERSION)
-    app.run(debug=config.FLASK_DEBUG, host='0.0.0.0', port=config.FLASK_PORT, ssl_context=context)
+    if config.USE_SSL:
+        app.run(debug=config.FLASK_DEBUG, host='0.0.0.0', port=config.FLASK_PORT, ssl_context=context)
+    else: 
+        app.run(debug=config.FLASK_DEBUG, host='0.0.0.0', port=config.FLASK_PORT)

@@ -1,6 +1,9 @@
 #API
 API_KEY = "btehsjqnhrdvghjqciebrffbkrxagvuy"
 
+#SSL
+USE_SSL = False
+
 # Playback
 #img_url = "D:/projects/dotnetprojects/dotnet-bodywornsln/files"
 PLAYBACK_IMAGE_SRC = "D:/projects/dotnetprojects/dotnet-bodywornsln/files"

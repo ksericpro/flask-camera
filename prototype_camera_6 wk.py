@@ -22,24 +22,23 @@ class Camera(object):
 
     # initialize
     def init(self):
-        #delay_start = 12
-        print("init:delay start={}s".format(config.PLAYBACK_CAMERA_DELAY_START))
+        delay_start = 10
+        print("init:delay start={}s".format(delay_start))
        # self.current_frameset = self.frameset_1
         #t = Timer(config.PLAYBACK_CAMERA_DELAY_START, self.openfiles, args=(self.current_frameset, self.img_url))
         #t.start()
-        t2 = Timer(config.PLAYBACK_CAMERA_DELAY_START, self.start_threads,)
+        t2 = Timer(delay_start, self.start_threads,)
         t2.start()
         #threading.Thread(target=lambda: self.every(config.PLAYBACK_PERIOD, self.iteration_checker)).start()
         print("init:completed")
 
     def start_threads(self):
-        #check_interval = 5
         print("start_threads:started")
         self.iteration_checker()
         #t2 = Timer(5, self.iteration_checker,)
         #t2.start()
         self.current_frameset_iteration_completed = True
-        self.thread= threading.Thread(target=lambda: self.every(config.PLAYBACK_CHECK_DIR_INTERVAL, self.iteration_checker))
+        self.thread= threading.Thread(target=lambda: self.every(5, self.iteration_checker))
         self.thread.start()
         print("start_threads:end")
 
@@ -129,11 +128,13 @@ class Camera(object):
                 index = tm % len(self.frames)
                #print("{0}: Index={1}, self.CURRENT_MAX_FRAMES_LENGTH={2}".format(tm, index, self.CURRENT_MAX_FRAMES_LENGTH))
                 if index == self.CURRENT_MAX_FRAMES_LENGTH -1:
+                    #print("****Reach")
                     self.REACH_END = True
                 
                 if self.REACH_END == False:
                     return self.frames[index]
                 else:
+                    #self.iteration_checker()
                     return self.frames[self.CURRENT_MAX_FRAMES_LENGTH -1]
             else:
                 return None

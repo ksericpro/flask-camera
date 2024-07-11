@@ -36,11 +36,11 @@ _redis_mgr = global_settings._redis_mgr
 current_working_directory = os.getcwd()
 print("current working dir = {}".format(current_working_directory))
 
-if config.USE_SSL:
-    print("using ssl")
-    context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER) 
-    context.load_cert_chain(os.path.join(current_working_directory, 'ssl/STAR_somesolutions_net.crt'), \
-                            os.path.join(current_working_directory, 'ssl/private.key'))
+#if config.USE_SSL:
+#    print("using ssl")
+#    context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER) 
+#    context.load_cert_chain(os.path.join(current_working_directory, 'ssl/STAR_somesolutions_net.crt'), \
+#                            os.path.join(current_working_directory, 'ssl/private.key'))
 
 #handler Exit
 def signal_handler(signal, frame):
@@ -175,7 +175,9 @@ if __name__ == '__main__':
     _logger.info(config.APPLICATION_NAME + " " + config.APPLICATION_VERSION)
     if config.USE_SSL:
         #app.run(debug=config.FLASK_DEBUG, host='0.0.0.0', port=config.FLASK_PORT, ssl_context=context)
-        uvicorn.run(wrapped_app, host='0.0.0.0', port=config.FLASK_PORT, ssl_context=context)
+        uvicorn.run(wrapped_app, host='0.0.0.0', port=config.FLASK_PORT,  ssl_version=ssl.PROTOCOL_SSLv23,
+        ssl_keyfile=os.path.join(current_working_directory, 'ssl/private.key'),        # Note that the generated certificates
+        ssl_certfile=os.path.join(current_working_directory, 'ssl/STAR_somesolutions_net.crt'))
     else: 
         #app.run(debug=config.FLASK_DEBUG, host='0.0.0.0', port=config.FLASK_PORT)
         uvicorn.run(wrapped_app, host='0.0.0.0', port=config.FLASK_PORT)

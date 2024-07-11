@@ -1,0 +1,1 @@
+Start "" "c:/tsb/app/bwc/bin/certis.iot.bodywornimagecutter.exe"

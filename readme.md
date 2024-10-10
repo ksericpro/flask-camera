@@ -20,6 +20,9 @@
 - https://smrtbwc.somesolutions.net:5000/
 - curl https://smrtbwc.somesolutions.net:5000/bwc/api/ping
 
+# setup nginx
+- taskkill /im nginx.exe /f
+
 # Link
 - *[Flask Camera] (https://blog.miguelgrinberg.com/post/video-streaming-with-flask)
                  (https://blog.miguelgrinberg.com/post/flask-video-streaming-revisited)

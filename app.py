@@ -58,9 +58,6 @@ app = Flask(__name__,
             template_folder='web/templates')
 CORS(app)
 
-@app.route('/')
-def index():
-    return render_template('camera.html')
 
 #@app.route("/test")
 #@authentication.check_mandatory_token
@@ -81,6 +78,23 @@ def gen(camera):
             yield('')
     _logger.info("Camera {} stream is terminated!".format(PREV_CAM_ID))
 
+
+@app.route('/')
+def index():
+    return {"msg": "alive"}, 200
+
+@app.route(config.API_PREFIX + '/')
+def index2():
+    return {"msg": "alive"}, 200
+
+@app.route(config.API_PREFIX + "/api/ping", methods=['GET'])
+def ping():
+    return {"msg": "pong"}, 200
+
+#@app.route(config.API_PREFIX + '/')
+#def web():
+#    return render_template('camera.html')
+
 @app.route(config.API_PREFIX + '/video_feed')
 def video_feed():
     global CAM_ID, CAM
@@ -96,10 +110,6 @@ def video_feed():
         return Response(open( dir + "/no_video.jpg", 'rb').read(), 
                         mimetype='multipart/x-mixed-replace; boundary=frame')
         
-
-@app.route(config.API_PREFIX + "/api/ping", methods=['GET'])
-def ping():
-    return {"msg": "pong"}, 200
 
 @app.route(config.API_PREFIX + "/api/start_camera", methods=['POST'])
 def start_camera():

@@ -23,6 +23,9 @@
 # setup nginx
 - taskkill /im nginx.exe /f
 
+- tcping 52.187.14.7 3389
+- tcping smrtbwc.somesolutions.net 3389
+
 # Link
 - *[Flask Camera] (https://blog.miguelgrinberg.com/post/video-streaming-with-flask)
                  (https://blog.miguelgrinberg.com/post/flask-video-streaming-revisited)

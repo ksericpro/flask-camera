@@ -1,0 +1,194 @@
+##
+# You should look at the following URL's in order to grasp a solid understanding
+# of Nginx configuration files in order to fully unleash the power of Nginx.
+# https://www.nginx.com/resources/wiki/start/
+# https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/
+# https://wiki.debian.org/Nginx/DirectoryStructure
+#
+# In most cases, administrators will remove this file from sites-enabled/ and
+# leave it as reference inside of sites-available where it will continue to be
+# updated by the nginx packaging team.
+#
+# This file will automatically load configuration files provided by other
+# applications, such as Drupal or Wordpress. These applications will be made
+# available underneath a path with that package name, such as /drupal8.
+#
+# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
+##
+
+# Default server configuration
+#
+#
+map $http_upgrade $connection_upgrade {
+     default upgrade;
+     '' close;
+ }
+
+
+upstream websocket_smrt_static {
+	server 192.168.1.135:4002;
+}
+
+upstream websocket_elog {
+	server 192.168.1.132:8088;
+}
+upstream websocket_elogapi {
+	server 192.168.1.132:8089;
+}
+
+upstream bodyworn-fileserver-server {
+    server 192.168.2.15:8226;
+}
+
+upstream photogateway-server {
+    server 192.168.2.8:4200;
+    server 192.168.2.9:4200;
+}
+
+upstream websocket_mso {
+    server 42.61.114.78:8003;
+    keepalive 64;
+}
+
+
+server {
+	listen 80;
+    listen 443 ssl http2;
+
+	#ssl_certificate /etc/nginx/ssl/bundle.crt;
+	#ssl_certificate_key /etc/nginx/ssl/smrtmbocc.certismozart.com.encrypted.pem;
+
+	ssl_certificate    /etc/nginx/ssl/ca-certificates.crt;
+	ssl_certificate_key    /etc/nginx/ssl/private.key;
+
+
+	ssl_prefer_server_ciphers on;	
+	ssl_session_cache shared:SSL:10m;	
+	ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';	
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+	ssl_dhparam /etc/nginx/ssl/dhparam.pem;
+
+	root /var/www/html;
+
+	# Add index.php to the list if you are using PHP
+	index index.html index.htm index.nginx-debian.html;
+
+	server_name smrtmbocc.certismozart.com;
+
+
+
+	location /elog/ {
+		proxy_pass http://192.168.1.132:8088/elog/;
+	}
+
+
+
+	location /elog/sockets/socket.io {
+			proxy_pass http://websocket_elog/elog/sockets;
+			proxy_http_version 1.1;
+			proxy_set_header Upgrade $http_upgrade;
+			proxy_set_header Connection $connection_upgrade;
+			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+			proxy_set_header Host $host;
+	}
+
+	location /smrt/ {
+			proxy_pass http://192.168.1.135:4002/smrt/;
+	}
+
+	location /smrt/sockets/socket.io {
+		proxy_pass http://websocket_smrt_static/smrt/sockets;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection $connection_upgrade;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header Host $host;
+	}
+
+	location /elog-api/ {
+			proxy_pass http://192.168.1.132:8089/elog-api/;
+	}
+
+
+
+	location /elog-api/sockets/socket.io/  {
+			proxy_pass http://websocket_elogapi/elog-api/sockets/socket.io/;
+			proxy_http_version 1.1;
+			proxy_set_header Upgrade $http_upgrade;
+			proxy_set_header Connection $connection_upgrade;
+			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+			proxy_set_header Host $host;
+	}
+
+	location /photogateway/ {
+			proxy_pass http://photogateway-server/photogateway/;
+	}
+	
+	#bodyworn-api
+ 	location /bodyworn/ {
+		proxy_pass http://192.168.2.15:8225/bodyworn/;
+	}
+	
+	#bodyworn-fileserver
+ 	location /bodyworn-fileserver/ {
+		proxy_pass http://192.168.2.15:8226/bodyworn-fileserver/;
+	}
+	
+	location /bodyworn-fileserver/sockets/socket.io {
+		proxy_pass http://bodyworn-fileserver-server/bodyworn-fileserver/sockets;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection $connection_upgrade;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header Host $host;
+	}
+	
+	location  /livestream {
+		proxy_pass http://websocket_mso/livestream;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection  "upgrade";
+		proxy_set_header Host $host;				
+	    proxy_connect_timeout 60m;
+	    proxy_read_timeout 60m;
+	    proxy_send_timeout 60m;		
+	}
+
+	# pass PHP scripts to FastCGI server
+	#
+	#location ~ \.php$ {
+	#	include snippets/fastcgi-php.conf;
+	#
+	#	# With php-fpm (or other unix sockets):
+	#	fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+	#	# With php-cgi (or other tcp sockets):
+	#	fastcgi_pass 127.0.0.1:9000;
+	#}
+
+	# deny access to .htaccess files, if Apache's document root
+	# concurs with nginx's one
+	#
+	#location ~ /\.ht {
+	#	deny all;
+	#}
+}
+
+
+# Virtual Host configuration for example.com
+#
+# You can move that to a different file under sites-available/ and symlink that
+# to sites-enabled/ to enable it.
+#
+#server {
+#	listen 80;
+#	listen [::]:80;
+#
+#	server_name example.com;
+#
+#	root /var/www/example.com;
+#	index index.html;
+#
+#	location / {
+#		try_files $uri $uri/ =404;
+#	}
+#}

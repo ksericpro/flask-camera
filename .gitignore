@@ -1,0 +1,11 @@
+logs/
+venv/
+venv*/
+*.pyc
+.env
+.production.env
+.DS_Store
+**/.DS_Store
+**/pytorch_model.bin
+data/
+*/logs

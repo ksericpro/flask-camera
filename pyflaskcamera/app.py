@@ -83,17 +83,17 @@ def gen(camera):
 def index():
     return {"msg": "alive"}, 200
 
-@app.route(config.API_PREFIX + '/')
-def index2():
-    return {"msg": "alive"}, 200
+#@app.route(config.API_PREFIX + '/')
+#def index2():
+#    return {"msg": "alive"}, 200
 
 @app.route(config.API_PREFIX + "/api/ping", methods=['GET'])
 def ping():
     return {"msg": "pong"}, 200
 
-#@app.route(config.API_PREFIX + '/')
-#def web():
-#    return render_template('camera.html')
+@app.route(config.API_PREFIX + '/')
+def web():
+    return render_template('camera.html')
 
 @app.route(config.API_PREFIX + '/video_feed')
 def video_feed():

@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <title>BWC Video Streaming</title>
+  </head>
+  <body>
+    <img src="images/logo.png" alt="logo"/>
+    <h1>BWC Video Streaming</h1>
+    <div>
+      <label>Camera ID</label>
+      <select id="selected_cam">
+          <option value="45">45</option>
+          <option value="828">828</option>
+      </select>
+      <input type="button" value="Activate" onclick="activatebwc()"/>
+      <input type="button" value="Stop" onclick="deactivatebwc()"/>
+    </div>
+    <div>
+      <img id="video_stream">
+    </div>
+    <script src="js/jquery.3.7.1.slim.min.js"></script>
+    <script src="js/axios.0.18.0.min.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/api_utils.js"></script>
+    <script>
+      var LAST_CAM_ID = -1;
+      var CURRENT_CAM_ID = -1;
+
+      async function activatebwc(){
+        var cam_id = $('#selected_cam option:selected').val();
+        console.log("starting cam_id="+cam_id);
+        try {
+          let result = await startvideo(cam_id);
+          $("#video_stream").attr("src","/bwc/video_feed");
+        }catch(err) {
+          console.log(err);
+        }finally {}
+      }
+
+      async function deactivatebwc(){
+        var cam_id = $('#selected_cam option:selected').val();
+        console.log("stopping cam_id="+cam_id);
+         $("#video_stream").attr("src", null);
+        try {
+          let result = await stopvideo();
+          $("#video_stream").attr("src","/bwc/video_feed");
+        }catch(err) {
+          console.log(err);
+        }finally {}
+      }
+
+      async function startvideo(id){
+        try {
+             if(!id) return;
+             LAST_CAM_ID = CURRENT_CAM_ID;
+             CURRENT_CAM_ID = id;
+             let result = await Api_Utils.startvideo(id);
+             console.log("result="+JSON.stringify(result));
+         }catch(err) {
+             console.log(err);
+         }finally {}
+      }
+
+      async function stopvideo(){
+        try {
+             LAST_CAM_ID = CURRENT_CAM_ID;
+             CURRENT_CAM_ID = -1;
+             let result = await Api_Utils.stopvideo();
+             console.log("result="+JSON.stringify(result));
+         }catch(err) {
+             console.log(err);
+         }finally {}
+      }
+
+    </script>
+  </body>
+</html>
